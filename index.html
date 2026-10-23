@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PFS Marketing</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --raised: #ffffff;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --ring: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --s1-soft: rgba(42,120,214,0.14);
+  --good: #0ca30c; --good-ink: #006300; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --accent: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --raised: #222221;
+    --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --ring: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --s1-soft: rgba(57,135,229,0.20); --good-ink: #0ca30c; --accent: #3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --raised: #222221;
+  --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --ring: rgba(255,255,255,0.10);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --s1-soft: rgba(57,135,229,0.20); --good-ink: #0ca30c; --accent: #3987e5;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--accent); }
+header { position: sticky; top: 0; z-index: 10; background: var(--page); border-bottom: 1px solid var(--grid); }
+.bar { max-width: 1320px; margin: 0 auto; padding: 12px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.brand { font-weight: 650; font-size: 16px; margin-right: auto; }
+.brand small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+select, button { font: inherit; color: var(--ink); background: var(--raised); border: 1px solid var(--ring);
+  border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+nav { max-width: 1320px; margin: 0 auto; padding: 0 16px; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: thin; }
+nav button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--ink-2);
+  padding: 8px 10px; white-space: nowrap; }
+nav button.on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+nav button .ph { font-size: 10px; color: var(--muted); margin-left: 4px; }
+main { max-width: 1320px; margin: 0 auto; padding: 16px; }
+section.tab { display: none; }
+section.tab.on { display: block; }
+h2 { font-size: 18px; margin: 4px 0 4px; }
+h3 { font-size: 14px; margin: 0 0 10px; font-weight: 600; }
+.lead { color: var(--ink-2); margin: 0 0 16px; max-width: 900px; }
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(12, 1fr); margin-bottom: 12px; }
+.card { background: var(--surface); border: 1px solid var(--ring); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.c3 { grid-column: span 3; } .c4 { grid-column: span 4; } .c6 { grid-column: span 6; }
+.c8 { grid-column: span 8; } .c12 { grid-column: span 12; }
+@media (max-width: 1000px) { .c3 { grid-column: span 6; } .c4, .c6, .c8 { grid-column: span 12; } }
+@media (max-width: 560px) { .c3 { grid-column: span 12; } }
+.kpi .label { color: var(--ink-2); font-size: 12px; }
+.kpi .value { font-size: 26px; font-weight: 650; margin-top: 2px; }
+.kpi .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.delta-up { color: var(--good-ink); } .delta-down { color: var(--critical); }
+.chart { position: relative; height: 260px; }
+.chart.tall { height: 320px; }
+.empty { border: 1px dashed var(--axis); border-radius: 12px; padding: 18px; color: var(--ink-2); background: var(--surface); }
+.empty b { color: var(--ink); }
+.missing { color: var(--muted); font-style: italic; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--ink-2); font-weight: 600; font-size: 12px; position: sticky; top: 0; background: var(--surface); cursor: pointer; user-select: none; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll { max-height: 440px; overflow: auto; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; border: 1px solid var(--ring); color: var(--ink-2); white-space: nowrap; }
+.pill.ativo { border-color: var(--good); color: var(--good-ink); }
+.pill.pausado { border-color: var(--warning); }
+.pill.encerrado { border-color: var(--critical); color: var(--critical); }
+.alert { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--grid); }
+.alert .icon { width: 20px; height: 20px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 700; }
+.alert .icon.critical { background: var(--critical); } .alert .icon.serious { background: var(--serious); } .alert .icon.warning { background: var(--warning); }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+.tile { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; overflow: hidden; text-decoration: none; color: var(--ink); }
+.tile .img { aspect-ratio: 4/5; background: var(--grid) center/cover no-repeat; position: relative; }
+.tile .img span { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,.6); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 99px; }
+.tile .meta { padding: 8px; font-size: 12px; color: var(--ink-2); display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
+.tile .meta b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin: -4px 0 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.sum-block { margin-bottom: 8px; }
+.sum-block ul { margin: 4px 0 0; padding-left: 18px; }
+.sum-block li { margin-bottom: 3px; color: var(--ink); }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.status-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px 16px; font-size: 12px; }
+.status-list div { display: flex; gap: 6px; align-items: baseline; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; display: inline-block; }
+.dot.ok { background: var(--good); } .dot.no { background: var(--axis); }
+.phase2 { text-align: center; padding: 40px 16px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">Pet Food Solution · Marketing<small id="updated">—</small></div>
+    <label>Período <select id="period">
+      <option value="7">Últimos 7 dias</option>
+      <option value="30">Últimos 30 dias</option>
+      <option value="90" selected>Últimos 90 dias</option>
+      <option value="365">Últimos 12 meses</option>
+      <option value="0">Tudo</option>
+    </select></label>
+    <label>Perfil <select id="profile"></select></label>
+    <button id="theme" title="Alternar tema">◐</button>
+  </div>
+  <nav id="tabs"></nav>
+</header>
+<main id="main"></main>
+
+<script>window.ESPERAR_DADOS = true;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// Local: data.js. Link publicado: os dados chegam pela tela de senha (portal/cadeado.html).
+let D = window.PFS_DATA || {};
+const TABS = [
+  ["geral", "Visão geral", 1], ["instagram", "Instagram", 1], ["parceiros", "Parceiros", 1],
+  ["midia", "Mídia paga", 1], ["leads", "Leads", 1], ["site", "Site", 1],
+  ["atendimento", "Atendimento e reputação", 1], ["concorrencia", "Concorrência", 1],
+  ["precos", "Preços e promoções", 1], ["conteudo", "Conteúdo, SEO e GEO", 1],
+];
+const NEEDS = {
+  instagram: "token da Meta com acesso aos perfil @petfoodsolutioneco",
+  comentarios: "token da Meta com a permissão instagram_manage_comments",
+  parceiros_instagram: "token da Meta (Business Discovery) para ler os perfis dos parceiros",
+  meta_ads: "token da Meta com ads_read e o ID da conta de anúncios",
+  google_ads: "script do Google Ads instalado e a planilha que ele preenche",
+  ga4: "acesso de leitor ao GA4 para a conta de serviço",
+  search_console: "acesso ao Search Console para a conta de serviço",
+  pagespeed: "chave gratuita da API PageSpeed Insights",
+  site_no_ar: "URL do site no .env",
+  concorrentes: "token da Meta (Business Discovery) e os @ dos concorrentes em COMPETITORS no .env",
+  reclame_aqui: "página pública da PFS no Reclame Aqui (RECLAMEAQUI no .env)",
+  noticias: "acesso ao RSS do Google Notícias (NEWS_QUERIES no .env)",
+  seo_site: "URL do site no .env (SITE_URL)",
+  precos: "acesso às buscas da Cobasi e da Petlove",
+  geo_gemini: "chave gratuita do Gemini (GEMINI_API_KEY no .env, criada em aistudio.google.com)",
+  buscas_google: "acesso ao autocompletar do Google (SEO_SEEDS no .env)",
+};
+const charts = [];
+let generation = 0;
+// Desenha depois que o HTML da aba entrou na página; ignora se outra renderização já começou.
+function later(fn) {
+  const g = generation;
+  setTimeout(() => { if (g !== generation) return; try { fn(); } catch (e) { console.error(e); } });
+}
+const $ = (s, el = document) => el.querySelector(s);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = (v, d = 0) => v == null || isNaN(v) ? "—" : Number(v).toLocaleString("pt-BR", { maximumFractionDigits: d, minimumFractionDigits: d });
+const pct = (v, d = 1) => v == null || isNaN(v) ? "—" : (v * 100).toLocaleString("pt-BR", { maximumFractionDigits: d, minimumFractionDigits: d }) + "%";
+const brl = v => v == null || isNaN(v) ? "—" : Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const short = v => v == null ? "—" : Math.abs(v) >= 1e6 ? fmt(v / 1e6, 1) + " mi" : Math.abs(v) >= 1e4 ? fmt(v / 1e3, 1) + " mil" : fmt(v);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const sum = (a, f) => a.reduce((t, x) => t + (+f(x) || 0), 0);
+const groupBy = (a, f) => a.reduce((m, x) => ((m[f(x)] ??= []).push(x), m), {});
+const monthLabel = ym => { const [y, m] = ym.split("-"); return ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][+m - 1] + "/" + y.slice(2); };
+
+function cutoff() {
+  const days = +$("#period").value;
+  if (!days) return "0000-00-00";
+  const d = new Date(); d.setDate(d.getDate() - days);
+  return d.toISOString().slice(0, 10);
+}
+const inPeriod = date => date >= cutoff();
+const profileSel = () => $("#profile").value;
+const ofProfile = p => !profileSel() || p === profileSel();
+
+function status(name) { return (D.status || {})[name]; }
+function emptyCard(title, sources, extra = "") {
+  const reasons = sources.map(s => {
+    const st = status(s);
+    const why = st && !st.ok ? ` <span class="missing">(${esc(st.message)})</span>` : "";
+    return `<li>${esc(NEEDS[s] || s)}${why}</li>`;
+  }).join("");
+  return `<div class="empty"><b>${esc(title)}: sem dados ainda.</b> Para aparecer, falta:<ul>${reasons}</ul>${extra}</div>`;
+}
+function kpi(label, value, sub = "") {
+  return `<div class="card kpi c3"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
+}
+function delta(cur, prev) {
+  if (prev == null || !prev || cur == null) return "";
+  const d = (cur - prev) / Math.abs(prev);
+  return `<span class="${d >= 0 ? "delta-up" : "delta-down"}">${d >= 0 ? "▲" : "▼"} ${pct(Math.abs(d), 0)}</span> vs período anterior`;
+}
+function prevWindow(rows, dateKey, f) {
+  const days = +$("#period").value; if (!days) return null;
+  const end = cutoff(); const s = new Date(end); s.setDate(s.getDate() - days);
+  const start = s.toISOString().slice(0, 10);
+  return sum(rows.filter(r => r[dateKey] >= start && r[dateKey] < end), f);
+}
+
+// ---------- gráficos ----------
+function baseOpts(extra = {}) {
+  const grid = css("--grid"), muted = css("--muted");
+  return Object.assign({
+    responsive: true, maintainAspectRatio: false, animation: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: css("--raised"), titleColor: css("--ink"),
+      bodyColor: css("--ink-2"), borderColor: css("--ring"), borderWidth: 1, padding: 10, boxPadding: 4 } },
+    scales: {
+      x: { grid: { display: false }, border: { color: css("--axis") }, ticks: { color: muted, maxRotation: 0, autoSkipPadding: 14 } },
+      y: { grid: { color: grid }, border: { display: false }, ticks: { color: muted, callback: v => short(v) }, beginAtZero: true },
+    },
+  }, extra);
+}
+function chart(el, cfg) {
+  if (!window.Chart) { el.innerHTML = '<p class="missing">Gráficos precisam de internet (Chart.js).</p>'; return; }
+  const canvas = document.createElement("canvas"); el.appendChild(canvas);
+  charts.push(new Chart(canvas, cfg));
+}
+function bars(el, labels, values, opts = {}) {
+  chart(el, { type: "bar", data: { labels, datasets: [{ data: values, backgroundColor: opts.color || css("--s1"),
+    borderRadius: 4, borderSkipped: "start", maxBarThickness: 28, label: opts.label || "" }] },
+    options: baseOpts(opts.horizontal ? { indexAxis: "y", scales: {
+      y: { grid: { display: false }, ticks: { color: css("--ink-2"), autoSkip: false } },
+      x: { grid: { color: css("--grid") }, border: { display: false }, ticks: { color: css("--muted"), callback: v => opts.pct ? pct(v, 0) : short(v) }, beginAtZero: true } } } : {}) });
+}
+function lines(el, labels, series) {
+  chart(el, { type: "line", data: { labels, datasets: series.map(s => Object.assign({
+    borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.25, fill: false }, s)) }, options: baseOpts() });
+}
+function legend(items) {
+  return `<div class="legend">${items.map(([c, t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join("")}</div>`;
+}
+function sortableTable(id, cols, rows) {
+  // cols: [label, key, {num, render}]
+  const head = cols.map((c, i) => `<th class="${c[2]?.num ? "n" : ""}" data-i="${i}">${c[0]}</th>`).join("");
+  const body = rows.map(r => `<tr>${cols.map(c => `<td class="${c[2]?.num ? "n" : ""}">${c[2]?.render ? c[2].render(r) : esc(r[c[1]] ?? "—")}</td>`).join("")}</tr>`).join("");
+  later(() => {
+    const t = document.getElementById(id); if (!t) return;
+    t.querySelectorAll("th").forEach(th => th.onclick = () => {
+      const c = cols[+th.dataset.i]; const dir = th.dataset.dir === "d" ? 1 : -1; th.dataset.dir = dir === 1 ? "a" : "d";
+      rows.sort((a, b) => { const x = a[c[1]], y = b[c[1]]; return (x == null) - (y == null) || (x > y ? 1 : x < y ? -1 : 0) * dir; });
+      t.querySelector("tbody").innerHTML = rows.map(r => `<tr>${cols.map(cc => `<td class="${cc[2]?.num ? "n" : ""}">${cc[2]?.render ? cc[2].render(r) : esc(r[cc[1]] ?? "—")}</td>`).join("")}</tr>`).join("");
+    });
+  });
+  return `<div class="scroll"><table id="${id}"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function countBars(el, rows, key, top = 10, horizontal = true) {
+  const g = Object.entries(groupBy(rows, r => r[key] ?? "Não informado")).map(([k, v]) => [k, v.length]).sort((a, b) => b[1] - a[1]);
+  const head = g.slice(0, top); const rest = g.slice(top);
+  if (rest.length) head.push(["Outros", sum(rest, x => x[1])]);
+  el.style.height = horizontal ? Math.max(160, head.length * 28 + 40) + "px" : "";
+  bars(el, head.map(x => x[0]), head.map(x => x[1]), { horizontal, label: "Leads" });
+}
+
+// ---------- abas ----------
+const R = {};
+
+R.geral = () => {
+  const ig = D.instagram || { profiles: {}, media: [] };
+  const media = ig.media.filter(m => inPeriod(m.date) && ofProfile(m.profile));
+  const profs = Object.entries(ig.profiles).filter(([u]) => ofProfile(u));
+  const followers = profs.map(([, p]) => p.followers.at(-1)?.value).filter(v => v != null);
+  const leadsRows = (D.leads?.rows || []).filter(r => inPeriod(r.date));
+  const metaRows = (D.ads?.meta?.rows || []).filter(r => inPeriod(r.date));
+  const googleRows = (D.ads?.google?.rows || []).filter(r => inPeriod(r.date));
+  const posts = (D.partners?.posts || []).filter(p => p.month >= cutoff().slice(0, 7));
+  const alerts = D.alerts || [];
+  let h = `<h2>Visão geral</h2><p class="lead">Resumo do período selecionado. Fontes ainda sem acesso aparecem como "—" e estão listadas no rodapé.</p><div class="grid">`;
+  h += kpi("Seguidores (perfis selecionados)", followers.length ? fmt(followers.reduce((a, b) => a + b, 0)) : "—",
+    profs.map(([u, p]) => p.forecast ? `@${u}: ${fmt(p.forecast.final.mid)} previstos em 90 dias` : "").filter(Boolean).join("<br>") || "previsão precisa de histórico");
+  h += kpi("Interações em posts próprios", media.length ? fmt(sum(media, m => m.interactions)) : "—", `${media.length} conteúdos no período`);
+  h += kpi("Investimento em mídia", metaRows.length || googleRows.length ? brl(sum(metaRows, r => r.spend) + sum(googleRows, r => r.spend)) : "—",
+    `Meta ${metaRows.length ? brl(sum(metaRows, r => r.spend)) : "—"} · Google ${googleRows.length ? brl(sum(googleRows, r => r.spend)) : "—"}`);
+  h += kpi("Leads", D.leads ? fmt(leadsRows.length) : "—", D.leads ? `planilha atualizada até ${D.leads.quality.last_date.split("-").reverse().join("/")}` : "");
+  h += `</div><div class="grid">`;
+  h += `<div class="card c6"><h3>Alertas abertos (${alerts.length})</h3>${alerts.length ? alerts.map(a =>
+    `<div class="alert"><span class="icon ${a.level}">!</span><div>${esc(a.text)}${a.link ? ` · <a href="${esc(a.link)}" target="_blank" rel="noopener">abrir</a>` : ""}</div></div>`).join("")
+    : '<p class="missing">Nenhum alerta. Comentários sem resposta, site fora do ar, mídia sem investimento e avisos do arquivo avisos.txt aparecem aqui.</p>'}</div>`;
+  const S = D.summary;
+  h += `<div class="card c6"><h3>Resumo da semana · ${S ? esc(S.period) : "—"}</h3>${S ? S.sections.filter(s => s.items.length).map(s =>
+    `<div class="sum-block"><b>${esc(s.title)}</b><ul>${s.items.map(i => `<li>${esc(i.text)}${i.link ? ` <a href="${esc(i.link)}" target="_blank" rel="noopener">abrir</a>` : ""}</li>`).join("")}</ul></div>`).join("")
+    + `<p class="missing">Semana de segunda a domingo, comparada com ${esc(S.previous)}. Montado automaticamente a partir dos dados do painel; o filtro de período do topo não altera este quadro.</p>`
+    : '<p class="missing">Resumo indisponível nesta geração.</p>'}</div>`;
+  const topMedia = [...media].sort((a, b) => (b.interactions || 0) - (a.interactions || 0)).slice(0, 3);
+  h += `<div class="card c6"><h3>Top 3 conteúdos próprios</h3>${topMedia.length ? sortableTable("t-top-media", [
+    ["Conteúdo", "caption", { render: r => `<a href="${esc(r.permalink)}" target="_blank" rel="noopener">${esc(r.type)} · @${esc(r.profile)}</a><br><span class="missing">${esc(r.caption.slice(0, 70))}</span>` }],
+    ["Interações", "interactions", { num: 1, render: r => fmt(r.interactions) }], ["Views", "views", { num: 1, render: r => short(r.views) }]], topMedia)
+    : emptyCard("Conteúdos", ["instagram"])}</div>`;
+  const ranked = posts.map(p => ({ ...p, v: p.metrics["1m"]?.views ?? p.metrics["7d"]?.views ?? p.metrics["1d"]?.views })).sort((a, b) => (b.v || 0) - (a.v || 0)).slice(0, 3);
+  h += `<div class="card c6"><h3>Top 3 posts de parceiros</h3>${ranked.length ? sortableTable("t-top-partners", [
+    ["Parceiro", "partner_name", { render: r => `<a href="${esc(r.url || "#")}" target="_blank" rel="noopener">${esc(r.partner_name)}</a> <span class="missing">${monthLabel(r.month)}</span>` }],
+    ["Views", "v", { num: 1, render: r => short(r.v) }], ["Engaj.", "rate", { num: 1, render: r => pct((r.metrics["1m"] || r.metrics["7d"] || r.metrics["1d"])?.rate) }]], ranked)
+    : '<p class="missing">Nenhum post de parceiro no período.</p>'}</div></div>`;
+  h += `<div class="card"><h3>Fontes de dados</h3><div class="status-list">${Object.entries(D.status || {}).map(([k, v]) =>
+    `<div><span class="dot ${v.ok ? "ok" : "no"}"></span><span><b>${esc(k.replace(/_/g, " "))}</b> ${v.ok ? "ok" : `<span class="missing">${esc(NEEDS[k] || v.message)}</span>`}</span></div>`).join("")}</div></div>`;
+  return h;
+};
+
+R.instagram = () => {
+  const ig = D.instagram || { profiles: {}, media: [] };
+  const profs = Object.entries(ig.profiles).filter(([u]) => ofProfile(u));
+  const hasData = profs.some(([, p]) => p.info);
+  if (!hasData) return `<h2>Instagram</h2>` + emptyCard("Instagram", ["instagram"],
+    "<p>Depois do token, a coleta diária guarda a contagem de seguidores todo dia. O histórico mais antigo vem da exportação do Business Suite (pasta <code>data/import</code>).</p>");
+  const colors = [css("--s1"), css("--s3")];
+  const media = ig.media.filter(m => inPeriod(m.date) && ofProfile(m.profile) && m.type !== "STORY");
+  let h = `<h2>Instagram</h2><p class="lead">Seguidores, previsão para 90 dias e o desempenho de cada conteúdo. Engajamento = interações ÷ alcance do post.</p><div class="grid">`;
+  profs.forEach(([u, p]) => {
+    const f = p.followers; const last = f.at(-1)?.value;
+    const prev = f.find(x => x.date >= cutoff())?.value;
+    h += kpi(`@${u} · seguidores`, fmt(last), prev != null && last != null ? `${last - prev >= 0 ? "+" : ""}${fmt(last - prev)} no período` : "");
+    h += kpi(`@${u} · previsão 90 dias`, p.forecast ? fmt(p.forecast.final.mid) : "—",
+      p.forecast ? `faixa ${fmt(p.forecast.final.low)} a ${fmt(p.forecast.final.high)} · ${fmt(p.forecast.per_day, 1)}/dia · confiança ${p.forecast.confidence}` : "precisa de 14+ dias de histórico");
+  });
+  h += `</div>`;
+  if (ig.missing?.length) h += `<div class="empty">${ig.missing.map(u => "@" + esc(u)).join(", ")} ainda não aparece no token da Meta: o perfil precisa estar no mesmo portfólio do Business Manager.</div><br>`;
+  const histDays = Math.max(...profs.map(([, p]) => p.followers.length));
+  h += `<div class="grid"><div class="card c12"><h3>Seguidores e previsão</h3>${histDays >= 2
+    ? `${legend(profs.map(([u], i) => [colors[i % 2], "@" + u]).concat([[css("--s1-soft"), "faixa da previsão"]]))}<div class="chart tall" id="ch-followers"></div>${profs.filter(([, p]) => p.reconstructed_until).map(([u, p]) =>
+        `<p class="missing">@${esc(u)}: até ${p.reconstructed_until.split("-").reverse().join("/")} a curva é reconstruída a partir dos novos seguidores diários exportados do Business Suite (aproximada: não desconta quem deixou de seguir). Depois disso, é a contagem real coletada todo dia. A linha tracejada é a previsão.</p>`).join("")}`
+    : `<p class="missing">O histórico diário começou em ${esc(profs[0][1].followers[0]?.date.split("-").reverse().join("/") || "hoje")}: a linha e a previsão aparecem a partir de 14 dias de coleta, ou antes, se a exportação de seguidores do Business Suite for colocada em <code>data/import</code>.</p>`}</div>`;
+  h += `<div class="card c6"><h3>Novos seguidores por dia (últimos 30 dias)</h3>${legend(profs.map(([u], i) => [colors[i % 2], "@" + u]))}<div class="chart" id="ch-newf"></div></div>`;
+  h += `<div class="card c6"><h3>Alcance por dia (últimos 30 dias)</h3>${legend(profs.map(([u], i) => [colors[i % 2], "@" + u]))}<div class="chart" id="ch-reach"></div></div>`;
+  h += `<div class="card c6"><h3>Desempenho médio por formato</h3><div class="chart" id="ch-format"></div></div>`;
+  h += `<div class="card c6"><h3>Interações médias por dia da semana</h3><div class="chart" id="ch-weekday"></div></div>`;
+  h += `<div class="card c12"><h3>Ranking de conteúdos (${media.length})</h3>${sortableTable("t-media", [
+    ["Conteúdo", "date", { render: r => `<a href="${esc(r.permalink)}" target="_blank" rel="noopener">${esc(r.date.split("-").reverse().join("/"))} · ${esc(r.type)}</a> <span class="pill">@${esc(r.profile)}</span><br><span class="missing">${esc(r.caption.slice(0, 90))}</span>` }],
+    ["Views", "views", { num: 1, render: r => fmt(r.views) }], ["Alcance", "reach", { num: 1, render: r => fmt(r.reach) }],
+    ["Curtidas", "likes", { num: 1, render: r => fmt(r.likes) }], ["Coment.", "comments", { num: 1, render: r => fmt(r.comments) }],
+    ["Compart.", "shares", { num: 1, render: r => fmt(r.shares) }], ["Salvos", "saves", { num: 1, render: r => fmt(r.saves) }],
+    ["Engaj.", "er_reach", { num: 1, render: r => pct(r.er_reach) }]],
+    [...media].sort((a, b) => (b.interactions || 0) - (a.interactions || 0)))}</div></div>`;
+  h += `<h3>Galeria</h3><div class="toolbar"><select id="g-type"><option value="">Todos os formatos</option><option>REELS</option><option>CAROUSEL_ALBUM</option><option>IMAGE</option><option>STORY</option></select>
+    <select id="g-sort"><option value="interactions">Mais interações</option><option value="views">Mais views</option><option value="date">Mais recentes</option><option value="er_reach">Maior engajamento</option></select></div><div class="gallery" id="gallery"></div>`;
+  later(() => {
+    const all = new Set(); profs.forEach(([, p]) => { p.followers.forEach(x => x.date >= cutoff() && all.add(x.date)); (p.forecast?.points || []).forEach(x => all.add(x.date)); });
+    const labels = [...all].sort();
+    const ds = [];
+    profs.forEach(([u, p], i) => {
+      const m = Object.fromEntries(p.followers.map(x => [x.date, x.value]));
+      ds.push({ label: "@" + u, data: labels.map(d => m[d] ?? null), borderColor: colors[i % 2], spanGaps: true });
+      if (p.forecast) {
+        const fm = Object.fromEntries(p.forecast.points.map(x => [x.date, x]));
+        ds.push({ label: `@${u} previsão`, data: labels.map(d => fm[d]?.mid ?? null), borderColor: colors[i % 2], borderDash: [6, 4], spanGaps: true });
+        ds.push({ label: `@${u} máx.`, data: labels.map(d => fm[d]?.high ?? null), borderColor: "transparent", backgroundColor: css("--s1-soft"), fill: "+1", pointRadius: 0 });
+        ds.push({ label: `@${u} mín.`, data: labels.map(d => fm[d]?.low ?? null), borderColor: "transparent", pointRadius: 0 });
+      }
+    });
+    for (const [id, key] of [["#ch-newf", "new_followers"], ["#ch-reach", "reach"]]) {
+      const days = [...new Set(profs.flatMap(([, p]) => p[key].map(x => x.date)))].sort();
+      const series = profs.map(([u, p], i) => { const m = Object.fromEntries(p[key].map(x => [x.date, x.value])); return { label: "@" + u, data: days.map(d => m[d] ?? null), backgroundColor: colors[i % 2], borderColor: colors[i % 2] }; });
+      if (key === "reach") lines($(id), days.map(d => d.split("-").reverse().slice(0, 2).join("/")), series);
+      else chart($(id), { type: "bar", data: { labels: days.map(d => d.split("-").reverse().slice(0, 2).join("/")), datasets: series.map(s => ({ ...s, borderRadius: 4, maxBarThickness: 18 })) }, options: baseOpts() });
+    }
+    if ($("#ch-followers")) chart($("#ch-followers"), { type: "line", data: { labels: labels.map(d => d.split("-").reverse().slice(0, 2).join("/")), datasets: ds.map(s => Object.assign({ borderWidth: 2, pointRadius: 0, tension: 0.2 }, s)) },
+      options: baseOpts({ scales: { x: baseOpts().scales.x, y: { ...baseOpts().scales.y, beginAtZero: false } } }) });
+    const byType = groupBy(media, m => m.type);
+    const types = Object.keys(byType);
+    bars($("#ch-format"), types, types.map(t => sum(byType[t], m => m.interactions) / byType[t].length), { label: "Interações médias" });
+    const wd = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"]; const byWd = groupBy(media, m => new Date(m.date + "T12:00").getDay());
+    bars($("#ch-weekday"), wd, wd.map((_, i) => byWd[i] ? sum(byWd[i], m => m.interactions) / byWd[i].length : 0), { label: "Interações médias" });
+    const drawGallery = () => {
+      const t = $("#g-type").value, s = $("#g-sort").value;
+      const items = ig.media.filter(m => inPeriod(m.date) && ofProfile(m.profile) && (!t || m.type === t))
+        .sort((a, b) => s === "date" ? b.date.localeCompare(a.date) : (b[s] || 0) - (a[s] || 0)).slice(0, 120);
+      $("#gallery").innerHTML = items.map(m => `<a class="tile" href="${esc(m.permalink)}" target="_blank" rel="noopener">
+        <div class="img" style="background-image:url('${esc(m.thumb || "")}')"><span>${esc(m.type)}</span></div>
+        <div class="meta"><div>Views <b>${short(m.views)}</b></div><div>Alcance <b>${short(m.reach)}</b></div>
+        <div>Curtidas <b>${short(m.likes)}</b></div><div>Coment. <b>${short(m.comments)}</b></div>
+        <div>Compart. <b>${short(m.shares)}</b></div><div>Engaj. <b>${pct(m.er_reach)}</b></div>
+        <div style="grid-column:span 2">@${esc(m.profile)} · ${m.date.split("-").reverse().join("/")}</div></div></a>`).join("") || '<p class="missing">Nenhum conteúdo no período.</p>';
+    };
+    $("#g-type").onchange = $("#g-sort").onchange = drawGallery; drawGallery();
+  });
+  return h;
+};
+
+R.parceiros = () => {
+  const P = D.partners;
+  if (!P) return `<h2>Parceiros</h2>` + emptyCard("Parceiros", ["planilha_parceiros"]);
+  const prof = P.profiles || {};
+  const reg = P.registry.map(p => {
+    const api = prof[p.handle] || null;
+    const posts = P.posts.filter(x => x.handle && x.handle === p.handle);
+    const views = posts.map(x => (x.metrics["1m"] || x.metrics["7d"] || x.metrics["1d"])?.views).filter(v => v != null);
+    const rates = posts.map(x => (x.metrics["1m"] || x.metrics["7d"] || x.metrics["1d"])?.rate).filter(v => v != null);
+    return { ...p, followers: api?.followers ?? p.followers_sheet, followers_src: api ? "API" : "planilha",
+      er_real: api?.engagement_rate ?? null, likes: api?.median_likes ?? null, comments: api?.median_comments ?? null,
+      ppw: api?.posts_per_week ?? null, pfs_posts: posts.length,
+      pfs_views: views.length ? views.reduce((a, b) => a + b, 0) / views.length : null,
+      pfs_rate: rates.length ? rates.reduce((a, b) => a + b, 0) / rates.length : null,
+      api_error: P.errors?.[p.handle] };
+  });
+  const active = reg.filter(p => p.status === "Ativo"), prospects = reg.filter(p => /poss/i.test(p.status));
+  const posts = P.posts.filter(p => p.month >= cutoff().slice(0, 7)).map(p => {
+    const m = p.metrics["1m"] || p.metrics["7d"] || p.metrics["1d"] || {};
+    return { ...p, views: m.views, likes: p.api?.likes ?? m.likes, comments: p.api?.comments ?? m.comments, rate: m.rate,
+      views1d: p.metrics["1d"]?.views, views7d: p.metrics["7d"]?.views, views1m: p.metrics["1m"]?.views };
+  });
+  const noApi = !Object.keys(prof).length;
+  let h = `<h2>Parceiros e influenciadores</h2><p class="lead">Cadastro, posts feitos para a PFS e dados públicos de cada perfil. Engajamento real = (curtidas + comentários) ÷ seguidores, mediana dos últimos 12 posts (posts com curtidas ocultas ficam de fora). Abaixo dele, a mediana de curtidas e comentários por post.</p>`;
+  if (noApi) h += emptyCard("Dados públicos dos perfis", ["parceiros_instagram"], "<p>Enquanto isso, seguidores e faixas vêm da planilha.</p>") + "<br>";
+  h += `<div class="grid">${kpi("Parceiros ativos", fmt(active.length), `${reg.filter(p => p.status === "Pausado").length} pausados · ${reg.filter(p => p.status === "Encerrado").length} encerrados`)}
+    ${kpi("Possíveis parceiros", fmt(prospects.length), "em avaliação")}
+    ${kpi("Posts para a PFS no período", fmt(posts.length), `${new Set(posts.map(p => p.handle || p.name)).size} parceiros publicaram`)}
+    ${kpi("Views médias por post (1 mês)", short(posts.length ? sum(posts, p => p.views) / posts.filter(p => p.views != null).length : null), "segundo a planilha de engajamento")}</div>`;
+  const rankRows = posts.filter(p => p.rate != null).sort((a, b) => b.rate - a.rate);
+  h += `<div class="grid"><div class="card c6"><h3>Engajamento por post para a PFS</h3><div class="chart" id="ch-p-rate" style="height:${Math.max(180, rankRows.length * 24 + 40)}px"></div></div>
+    <div class="card c6"><h3>Views por post: 1 dia, 7 dias e 1 mês</h3>${legend([[css("--s1"), "1 dia"], [css("--s2"), "7 dias"], [css("--s3"), "1 mês"]])}<div class="chart" id="ch-p-views" style="height:${Math.max(180, posts.length * 26 + 40)}px"></div></div></div>`;
+  h += `<div class="card" style="margin-bottom:12px"><h3>Fichas dos parceiros</h3><div class="toolbar"><select id="p-status"><option value="">Todos os status</option>${[...new Set(reg.map(p => p.status))].map(s => `<option>${esc(s)}</option>`).join("")}</select></div><div id="p-table"></div></div>`;
+  h += `<div class="grid"><div class="card c12"><h3>Posts feitos para a PFS (${posts.length})</h3>${sortableTable("t-p-posts", [
+    ["Parceiro", "partner_name", { render: r => `${esc(r.partner_name)} <span class="missing">${monthLabel(r.month)}</span>` }],
+    ["Post", "url", { render: r => r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.format || "abrir")}</a>` : '<span class="missing">sem link</span>' }],
+    ["Views 1d", "views1d", { num: 1, render: r => fmt(r.views1d) }], ["Views 7d", "views7d", { num: 1, render: r => fmt(r.views7d) }],
+    ["Views 1m", "views1m", { num: 1, render: r => fmt(r.views1m) }], ["Curtidas", "likes", { num: 1, render: r => fmt(r.likes) }],
+    ["Coment.", "comments", { num: 1, render: r => fmt(r.comments) }], ["Engaj.", "rate", { num: 1, render: r => pct(r.rate) }],
+    ["Obs.", "notes", { render: r => [esc(r.notes || ""), ...(r.issues || []).map(i => `<span class="missing">⚠ ${esc(i)}</span>`)].filter(Boolean).join("<br>") }]], [...posts].sort((a, b) => b.month.localeCompare(a.month) || (b.views || 0) - (a.views || 0)))}</div>`;
+  const mats = P.materials.filter(m => m.material && m.month >= cutoff().slice(0, 7));
+  h += `<div class="card c12"><h3>Materiais e bonificações enviados (${mats.length})</h3>${sortableTable("t-p-mat", [
+    ["Mês", "month", { render: r => monthLabel(r.month) }], ["Parceiro", "name"], ["Enviado em", "sent_on"], ["Material", "material"],
+    ["Conteúdo cobrado?", "content_charged"], ["Entregou?", "content_delivered"]], mats.reverse())}</div></div>`;
+  later(() => {
+    bars($("#ch-p-rate"), rankRows.map(p => `${p.partner_name} (${monthLabel(p.month)})`), rankRows.map(p => p.rate), { horizontal: true, pct: true, label: "Engajamento" });
+    const pv = [...posts].sort((a, b) => (b.views1m || b.views7d || 0) - (a.views1m || a.views7d || 0));
+    chart($("#ch-p-views"), { type: "bar", data: { labels: pv.map(p => `${p.partner_name} (${monthLabel(p.month)})`), datasets: [
+      ["1 dia", "views1d", "--s1"], ["7 dias", "views7d", "--s2"], ["1 mês", "views1m", "--s3"]].map(([l, k, c]) => ({
+      label: l, data: pv.map(p => p[k] ?? null), backgroundColor: css(c), borderRadius: 3, maxBarThickness: 8 })) },
+      options: baseOpts({ indexAxis: "y", scales: { y: { grid: { display: false }, ticks: { color: css("--ink-2"), autoSkip: false } },
+        x: { grid: { color: css("--grid") }, border: { display: false }, ticks: { color: css("--muted"), callback: v => short(v) } } } }) });
+    const drawReg = () => {
+      const s = $("#p-status").value;
+      $("#p-table").innerHTML = sortableTable("t-p-reg", [
+        ["Parceiro", "name", { render: r => `<b>${esc(r.name)}</b>${r.handle ? `<br><a href="https://instagram.com/${esc(r.handle)}" target="_blank" rel="noopener">@${esc(r.handle)}</a>` : ""}` }],
+        ["Status", "status", { render: r => `<span class="pill ${esc(r.status.toLowerCase())}">${esc(r.status)}</span>` }],
+        ["Categoria", "category"],
+        ["Seguidores", "followers", { num: 1, render: r => `${short(r.followers)}<br><span class="missing">${r.followers_src}</span>` }],
+        ["Engaj. real", "er_real", { num: 1, render: r => r.er_real != null ? `${pct(r.er_real, 2)}${r.likes != null ? `<br><span class="missing">${short(r.likes)} curt. · ${short(r.comments)} com.</span>` : ""}` : `<span class="missing">${r.api_error ? "conta sem dados públicos" : "—"}</span>` }],
+        ["Faixa planilha", "engagement_range", { render: r => esc(r.engagement_range || "—") }],
+        ["Posts/sem.", "ppw", { num: 1, render: r => fmt(r.ppw, 1) }],
+        ["Posts PFS", "pfs_posts", { num: 1 }], ["Views méd. PFS", "pfs_views", { num: 1, render: r => short(r.pfs_views) }],
+        ["Engaj. PFS", "pfs_rate", { num: 1, render: r => pct(r.pfs_rate) }], ["Local", "location"]],
+        reg.filter(p => !s || p.status === s).sort((a, b) => (b.followers || 0) - (a.followers || 0)));
+    };
+    $("#p-status").onchange = drawReg; drawReg();
+  });
+  return h;
+};
+
+R.midia = () => {
+  const M = D.ads?.meta, G = D.ads?.google;
+  let h = `<h2>Mídia paga</h2><p class="lead">Meta Ads e Google Ads lado a lado. "Resultados" segue o objetivo de cada campanha (leads, conversas ou cliques).</p>`;
+  if (!M && !G) return h + emptyCard("Mídia paga", ["meta_ads", "google_ads"]);
+  const blocks = [["Meta Ads", M, "meta_ads", "--s1"], ["Google Ads", G, "google_ads", "--s2"]];
+  h += `<div class="grid">`;
+  blocks.forEach(([name, src]) => {
+    const rows = (src?.rows || []).filter(r => inPeriod(r.date));
+    const spend = sum(rows, r => r.spend), imp = sum(rows, r => r.impressions), clk = sum(rows, r => r.clicks), res = sum(rows, r => r.results);
+    h += kpi(`${name} · investimento`, src ? brl(spend) : "—", src ? delta(spend, prevWindow(src.rows, "date", r => r.spend)) : "sem acesso");
+    h += kpi(`${name} · CTR / CPC`, src ? `${pct(imp ? clk / imp : null, 2)}` : "—", src ? `CPC ${brl(clk ? spend / clk : null)} · CPM ${brl(imp ? spend / imp * 1000 : null)}` : "");
+  });
+  h += `</div><div class="grid"><div class="card c12"><h3>Investimento diário</h3>${legend(blocks.filter(b => b[1]).map(b => [css(b[3]), b[0]]))}<div class="chart" id="ch-spend"></div></div>`;
+  blocks.forEach(([name, src, key]) => {
+    if (!src) { h += `<div class="card c12">${emptyCard(name, [key])}</div>`; return; }
+    const rows = src.rows.filter(r => inPeriod(r.date));
+    const camp = Object.entries(groupBy(rows, r => r.campaign)).map(([c, rs]) => {
+      const spend = sum(rs, r => r.spend), imp = sum(rs, r => r.impressions), clk = sum(rs, r => r.clicks), res = sum(rs, r => r.results);
+      return { campaign: c, spend, imp, clk, res, ctr: imp ? clk / imp : null, cpc: clk ? spend / clk : null, cpr: res ? spend / res : null };
+    });
+    h += `<div class="card c12"><h3>${name}: campanhas</h3>${sortableTable("t-c-" + key, [["Campanha", "campaign"],
+      ["Investimento", "spend", { num: 1, render: r => brl(r.spend) }], ["Impressões", "imp", { num: 1, render: r => fmt(r.imp) }],
+      ["Cliques", "clk", { num: 1, render: r => fmt(r.clk) }], ["CTR", "ctr", { num: 1, render: r => pct(r.ctr, 2) }],
+      ["CPC", "cpc", { num: 1, render: r => brl(r.cpc) }], ["Resultados", "res", { num: 1, render: r => fmt(r.res) }],
+      ["Custo/result.", "cpr", { num: 1, render: r => brl(r.cpr) }]], camp.sort((a, b) => b.spend - a.spend))}</div>`;
+  });
+  if (M) {
+    const ads = Object.values(groupBy(M.rows.filter(r => inPeriod(r.date)), r => r.ad_id)).map(rs => {
+      const spend = sum(rs, r => r.spend), clk = sum(rs, r => r.clicks), imp = sum(rs, r => r.impressions), res = sum(rs, r => r.results);
+      return { ad: rs[0].ad, ad_id: rs[0].ad_id, campaign: rs[0].campaign, spend, clk, imp, res, ctr: imp ? clk / imp : null, cpr: res ? spend / res : null, cr: M.creatives[rs[0].ad_id] || {} };
+    });
+    h += `<div class="card c12"><h3>Criativos Meta</h3>${sortableTable("t-ads", [
+      ["Criativo", "ad", { render: r => `<div style="display:flex;gap:8px;align-items:center">${r.cr.thumbnail ? `<img src="${esc(r.cr.thumbnail)}" width="44" height="44" style="border-radius:6px;object-fit:cover">` : ""}<div>${r.cr.permalink ? `<a href="${esc(r.cr.permalink)}" target="_blank" rel="noopener">${esc(r.ad)}</a>` : esc(r.ad)}<br><span class="missing">${esc(r.campaign)}</span></div></div>` }],
+      ["Investimento", "spend", { num: 1, render: r => brl(r.spend) }], ["CTR", "ctr", { num: 1, render: r => pct(r.ctr, 2) }],
+      ["Resultados", "res", { num: 1, render: r => fmt(r.res) }], ["Custo/result.", "cpr", { num: 1, render: r => brl(r.cpr) }]],
+      ads.sort((a, b) => b.spend - a.spend))}</div>`;
+  }
+  h += `</div>`;
+  later(() => {
+    const days = new Set(); blocks.forEach(([, s]) => (s?.rows || []).forEach(r => inPeriod(r.date) && days.add(r.date)));
+    const labels = [...days].sort();
+    lines($("#ch-spend"), labels.map(d => d.split("-").reverse().slice(0, 2).join("/")), blocks.filter(b => b[1]).map(([name, src, , c]) => {
+      const by = groupBy(src.rows, r => r.date); return { label: name, borderColor: css(c), data: labels.map(d => by[d] ? sum(by[d], r => r.spend) : 0) };
+    }));
+  });
+  return h;
+};
+
+R.leads = () => {
+  const L = D.leads;
+  if (!L) return `<h2>Leads</h2>` + emptyCard("Leads", ["planilha_leads"]);
+  const rows = L.rows.filter(r => inPeriod(r.date));
+  const q = L.quality;
+  const months = groupBy(L.rows, r => r.date.slice(0, 7));
+  const mKeys = Object.keys(months).sort().filter(m => m >= cutoff().slice(0, 7));
+  const g = D.ads?.google;
+  let h = `<h2>Leads</h2><p class="lead">Planilha do atendimento, atualizada até <b>${q.last_date.split("-").reverse().join("/")}</b>. Sem o TOTVS, não dá para saber quem comprou; se a planilha ganhar a coluna "Comprou?" (Sim/Não), a conversão aparece aqui automaticamente.</p>`;
+  if (!rows.length) h += `<div class="empty">Nenhum lead no período selecionado: a planilha termina em ${q.last_date.split("-").reverse().join("/")}. Escolha "Últimos 12 meses" ou "Tudo" no topo.</div><br>`;
+  const gLeads = rows.filter(r => r.origin === "Google").length;
+  const gSpend = g ? sum(g.rows.filter(r => inPeriod(r.date)), r => r.spend) : null;
+  h += `<div class="grid">${kpi("Leads no período", fmt(rows.length), delta(rows.length, prevWindow(L.rows, "date", () => 1)))}
+    ${kpi("Lojistas", fmt(rows.filter(r => r.classification === "Lojista").length), pct(rows.length ? rows.filter(r => r.classification === "Lojista").length / rows.length : null, 0) + " dos leads")}
+    ${kpi("Origem Google", fmt(gLeads), g ? `CPL Google ${brl(gLeads ? gSpend / gLeads : null)}` : "CPL precisa do Google Ads")}
+    ${kpi("Sem origem informada", pct(rows.length ? rows.filter(r => r.origin === "Não informado").length / rows.length : null, 0), `${fmt(rows.filter(r => r.has_cnpj).length)} com CNPJ`)}</div>`;
+  h += `<div class="grid"><div class="card c12"><h3>Leads por mês</h3><div class="chart" id="ch-l-month"></div></div>
+    <div class="card c4"><h3>Tipo de cliente</h3><div class="chart" id="ch-l-class"></div></div>
+    <div class="card c4"><h3>Estado</h3><div class="chart" id="ch-l-state"></div></div>
+    <div class="card c4"><h3>Canal de origem</h3><div class="chart" id="ch-l-origin"></div></div>
+    <div class="card c6"><h3>Canal de contato</h3><div class="chart" id="ch-l-channel"></div></div>
+    <div class="card c6"><h3>Encaminhado para (top 10)</h3><div class="chart" id="ch-l-seller"></div></div>
+    <div class="card c12"><h3>Cidades (top 25)</h3>${sortableTable("t-l-city", [["Cidade", "city"], ["UF", "state"], ["Leads", "n", { num: 1 }], ["Lojistas", "loj", { num: 1 }]],
+      Object.values(groupBy(rows, r => r.city + "|" + r.state)).map(rs => ({ city: rs[0].city, state: rs[0].state, n: rs.length, loj: rs.filter(r => r.classification === "Lojista").length })).sort((a, b) => b.n - a.n).slice(0, 25))}</div></div>`;
+  h += `<p class="missing">Qualidade: ${fmt(q.missing_origin)} de ${fmt(q.total_rows)} leads sem "Canal de Origem". Códigos de "Tipo de Atendimento": ${Object.entries(L.type_codes).map(([k, v]) => `${k}=${v}`).join(", ")} (significado a confirmar).</p>`;
+  later(() => {
+    bars($("#ch-l-month"), mKeys.map(monthLabel), mKeys.map(m => months[m].length), { label: "Leads" });
+    countBars($("#ch-l-class"), rows, "classification", 6);
+    countBars($("#ch-l-state"), rows, "state", 8);
+    countBars($("#ch-l-origin"), rows, "origin", 5);
+    countBars($("#ch-l-channel"), rows, "channel", 6);
+    countBars($("#ch-l-seller"), rows, "seller", 10);
+  });
+  return h;
+};
+
+R.site = () => {
+  const S = D.site || {};
+  let h = `<h2>Site</h2><p class="lead">${S.url ? `<a href="${esc(S.url)}" target="_blank" rel="noopener">${esc(S.url)}</a> · ` : ""}visitas, páginas, origem do tráfego, conversões e velocidade.</p><div class="grid">`;
+  h += kpi("Site no ar", S.up ? (S.up.up ? "Sim" : "Não") : "—", S.up ? `última checagem: resposta em ${fmt(S.up.seconds, 2)} s` : "");
+  const ps = S.pagespeed;
+  h += kpi("Velocidade (celular)", ps ? `${ps.mobile.score}/100` : "—", ps ? `LCP ${fmt(ps.mobile.lcp_s, 1)} s · CLS ${fmt(ps.mobile.cls, 2)}` : esc(NEEDS.pagespeed));
+  h += kpi("Velocidade (computador)", ps ? `${ps.desktop.score}/100` : "—", ps ? `LCP ${fmt(ps.desktop.lcp_s, 1)} s` : "");
+  const ga = S.ga4;
+  const daily = ga ? ga.daily.map(r => ({ date: `${r.date.slice(0, 4)}-${r.date.slice(4, 6)}-${r.date.slice(6)}`, s: +r.sessions, k: +r.keyEvents })).filter(r => inPeriod(r.date)).sort((a, b) => a.date.localeCompare(b.date)) : [];
+  h += kpi("Sessões no período", ga ? fmt(sum(daily, r => r.s)) : "—", ga ? `${fmt(sum(daily, r => r.k))} conversões (eventos-chave)` : "precisa do GA4");
+  h += `</div>`;
+  if (!ga) h += emptyCard("Tráfego do site", ["ga4", "search_console"]);
+  else {
+    h += `<div class="grid"><div class="card c12"><h3>Sessões por dia</h3><div class="chart" id="ch-s-daily"></div></div>
+      <div class="card c6"><h3>Origem do tráfego</h3><div class="chart" id="ch-s-src"></div></div>
+      <div class="card c6"><h3>Páginas mais vistas</h3>${sortableTable("t-s-pages", [["Página", "pagePath"], ["Views", "v", { num: 1, render: r => fmt(r.v) }], ["Taxa de saída", "b", { num: 1, render: r => pct(r.b) }]],
+        ga.pages.map(p => ({ ...p, v: +p.screenPageViews, b: +p.bounceRate })))}</div></div>`;
+    later(() => {
+      lines($("#ch-s-daily"), daily.map(r => r.date.split("-").reverse().slice(0, 2).join("/")), [{ label: "Sessões", borderColor: css("--s1"), data: daily.map(r => r.s) }]);
+      const src = ga.sources.map(r => [r.sessionDefaultChannelGroup, +r.sessions]);
+      $("#ch-s-src").style.height = Math.max(180, src.length * 28 + 40) + "px";
+      bars($("#ch-s-src"), src.map(x => x[0]), src.map(x => x[1]), { horizontal: true, label: "Sessões" });
+    });
+  }
+  if (S.gsc) h += `<div class="card"><h3>Buscas no Google (Search Console)</h3>${sortableTable("t-gsc", [["Busca", "q"], ["Cliques", "clicks", { num: 1 }], ["Impressões", "impressions", { num: 1 }], ["Posição", "position", { num: 1, render: r => fmt(r.position, 1) }]],
+    S.gsc.queries.map(r => ({ q: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position })))}</div>`;
+  return h;
+};
+
+R.atendimento = () => {
+  const U = (D.unanswered || []).filter(c => ofProfile(c.profile));
+  let h = `<h2>Atendimento e reputação</h2><p class="lead">Comentários sem resposta nos posts dos últimos 14 dias, reputação no Reclame Aqui (PFS e concorrentes) e menções na imprensa.</p>`;
+  if (status("comentarios")?.ok === false || (!D.unanswered?.length && !status("comentarios"))) h += emptyCard("Comentários sem resposta", ["comentarios"]);
+  else h += `<div class="card"><h3>Comentários sem resposta (${U.length})</h3>${U.length ? sortableTable("t-unans", [
+    ["Quando", "timestamp", { render: r => new Date(r.timestamp).toLocaleString("pt-BR") }], ["Perfil", "profile", { render: r => "@" + esc(r.profile) }],
+    ["Autor", "author", { render: r => "@" + esc(r.author) }], ["Comentário", "text"],
+    ["Post", "media_permalink", { render: r => `<a href="${esc(r.media_permalink)}" target="_blank" rel="noopener">abrir</a>` }]], U.sort((a, b) => a.timestamp.localeCompare(b.timestamp)))
+    : '<p class="missing">Tudo respondido.</p>'}</div>`;
+  const RA = D.reputation?.reclameaqui;
+  if (!RA) h += "<br>" + emptyCard("Reclame Aqui", ["reclame_aqui"]);
+  else {
+    const own = Object.values(RA.companies).find(c => c.own);
+    h += `<br><div class="grid">${kpi("Reputação PFS no Reclame Aqui", esc(own.reputation || "—"), `nota ${fmt(own.ra_score, 1)}/10 · ${esc(own.period || "")}`)}
+      ${kpi("Reclamações recebidas", fmt(own.received), `${fmt(own.waiting)} aguardando resposta`)}
+      ${kpi("Resolvidas", pct(own.solved, 1), `${pct(own.answered, 0)} respondidas · resposta em ${esc(own.response_time || "—")}`)}
+      ${kpi("Voltariam a fazer negócio", pct(own.deal_again, 1), `nota do consumidor ${fmt(own.consumer_score, 2)} (${fmt(own.rated)} avaliações)`)}</div>`;
+    h += `<div class="grid"><div class="card c6"><h3>Reclame Aqui: PFS × concorrentes</h3>${sortableTable("t-ra", [
+      ["Empresa", "name", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>` }], ["Reputação", "reputation"],
+      ["Nota", "ra_score", { num: 1, render: r => fmt(r.ra_score, 1) }], ["Reclam.", "received", { num: 1, render: r => fmt(r.received) }],
+      ["Resolvidas", "solved", { num: 1, render: r => pct(r.solved, 0) }], ["Voltariam", "deal_again", { num: 1, render: r => pct(r.deal_again, 0) }]],
+      Object.values(RA.companies))}<p class="missing">Cada empresa no período que o Reclame Aqui mostra por padrão (a PFS, com poucas reclamações, aparece em 12 meses; as outras, em 6). Comparar com cuidado.</p></div>`;
+    h += `<div class="card c6"><h3>Últimas reclamações da PFS</h3>${RA.complaints.length ? sortableTable("t-ra-list", [
+      ["Data", "date", { render: r => r.date ? r.date.split("-").reverse().join("/") : "—" }],
+      ["Reclamação", "title", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a><br><span class="missing">${esc(r.excerpt.slice(0, 110))}</span>` }],
+      ["Status", "status", { render: r => `<span class="pill">${esc(r.status || "—")}</span>` }]], RA.complaints)
+      : '<p class="missing">Nenhuma reclamação recente.</p>'}</div></div>`;
+  }
+  const N = D.reputation?.news;
+  if (!N) h += emptyCard("Menções na imprensa", ["noticias"]);
+  else {
+    const counts = groupBy(N, n => n.sentiment);
+    h += `<div class="card"><h3>Menções na imprensa (Google Notícias)</h3><p class="missing">${["positiva", "neutra", "negativa"].map(s => `${(counts[s] || []).length} ${s}${(counts[s] || []).length === 1 ? "" : "s"}`).join(" · ")}. Classificação por palavras-chave (sem IA paga): serve para triagem e pode errar. Buscas: ${esc([...new Set(N.map(n => n.query))].join(", "))}.</p>${sortableTable("t-news", [
+      ["Data", "date", { render: r => r.date ? r.date.split("-").reverse().join("/") : "—" }],
+      ["Manchete", "title", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>` }],
+      ["Tom", "sentiment", { render: r => `<span class="pill">${esc(r.sentiment)}</span>` }], ["Busca", "query"]],
+      [...N].sort((a, b) => (b.date || "").localeCompare(a.date || "")))}</div>`;
+  }
+  return h;
+};
+
+R.concorrencia = () => {
+  const C = D.competitors;
+  if (!C) return `<h2>Concorrência</h2>` + emptyCard("Concorrência", ["concorrentes"]);
+  const B = C.brands, own = B.find(b => b.own);
+  const color = b => b.own ? css("--s1") : css("--muted");
+  const label = b => b.own ? `PFS (@${b.handle})` : b.name;
+  const pos = key => { const r = B.filter(b => b[key] != null).sort((a, b) => b[key] - a[key]); return own && r.includes(own) ? `${r.indexOf(own) + 1}º de ${r.length}` : "—"; };
+  let h = `<h2>Concorrência</h2><p class="lead">Perfis públicos no Instagram, todos medidos do mesmo jeito: engajamento = (curtidas + comentários) ÷ seguidores, mediana dos últimos 30 posts. A PFS esconde as curtidas no perfil público; para ela entram as curtidas reais da própria conta. Atualizado todo dia às 6h; o histórico começou em ${C.since.split("-").reverse().join("/")}.</p>`;
+  h += `<div class="grid">${kpi("Engajamento da PFS", pct(own?.engagement_rate, 2), `posição ${pos("engagement_rate")}`)}
+    ${kpi("Posts da PFS em 30 dias", fmt(own?.posts_30d), `posição ${pos("posts_30d")}`)}
+    ${kpi("Seguidores da PFS", short(own?.followers), `posição ${pos("followers")}`)}
+    ${kpi("Ganho de seguidores em 30 dias", own?.growth_30d != null ? fmt(own.growth_30d) : "—", own?.growth_30d != null ? `posição ${pos("growth_30d")}` : "aparece com 30 dias de histórico")}</div>`;
+  h += `<div class="card" style="margin-bottom:12px"><h3>Leitura</h3><ul>${C.reading.map(t => `<li>${esc(t)}</li>`).join("")}</ul><p class="missing">Montada por regras a partir dos números abaixo, sem IA paga.</p></div>`;
+  const sorted = key => [...B].filter(b => b[key] != null).sort((a, b) => b[key] - a[key]);
+  const hb = n => Math.max(180, n * 30 + 40);
+  h += `<div class="grid"><div class="card c6"><h3>Engajamento por post</h3><div class="chart" id="ch-c-eng" style="height:${hb(B.length)}px"></div></div>
+    <div class="card c6"><h3>Posts nos últimos 30 dias</h3><div class="chart" id="ch-c-posts" style="height:${hb(B.length)}px"></div></div></div>`;
+  h += `<div class="card" style="margin-bottom:12px"><h3>Comparativo</h3>${sortableTable("t-comp", [
+    ["Marca", "name", { render: r => `<a href="https://www.instagram.com/${esc(r.handle)}/" target="_blank" rel="noopener">${esc(label(r))}</a>` }],
+    ["Seguidores", "followers", { num: 1, render: r => fmt(r.followers) }],
+    ["Ganho 7d", "growth_7d", { num: 1, render: r => r.growth_7d == null ? '<span class="missing">—</span>' : fmt(r.growth_7d) }],
+    ["Ganho 30d", "growth_30d", { num: 1, render: r => r.growth_30d == null ? '<span class="missing">—</span>' : fmt(r.growth_30d) }],
+    ["Posts 30d", "posts_30d", { num: 1, render: r => fmt(r.posts_30d) }], ["Posts/sem.", "posts_per_week", { num: 1, render: r => fmt(r.posts_per_week, 1) }],
+    ["Reels", "reels_share", { num: 1, render: r => pct(r.reels_share, 0) }],
+    ["Engaj.", "engagement_rate", { num: 1, render: r => pct(r.engagement_rate, 2) }],
+    ["Curtidas (mediana)", "median_likes", { num: 1, render: r => fmt(r.median_likes) }], ["Coment. (mediana)", "median_comments", { num: 1, render: r => fmt(r.median_comments) }]],
+    sorted("followers"))}<p class="missing">Ganho de seguidores aparece quando houver 7 e 30 dias de coleta. Posts com curtidas ocultas ficam fora do engajamento.${Object.keys(C.errors || {}).length ? " Não lidos hoje: " + Object.keys(C.errors).map(h => "@" + esc(h)).join(", ") + "." : ""}</p></div>`;
+  const tops = B.flatMap(b => b.top_posts.map(p => ({ ...p, brand: label(b), inter: (p.likes || 0) + (p.comments || 0) }))).sort((a, b) => b.inter - a.inter);
+  h += `<div class="card"><h3>Posts com mais interações nos últimos 30 dias (3 por marca)</h3>${sortableTable("t-comp-top", [
+    ["Marca", "brand"], ["Post", "date", { render: r => `<a href="${esc(r.permalink)}" target="_blank" rel="noopener">${r.date.split("-").reverse().join("/")} · ${esc(r.type === "REELS" ? "reel" : (r.type || "").toLowerCase())}</a><br><span class="missing">${esc(r.caption.slice(0, 110))}</span>` }],
+    ["Curtidas", "likes", { num: 1, render: r => fmt(r.likes) }], ["Coment.", "comments", { num: 1, render: r => fmt(r.comments) }], ["Interações", "inter", { num: 1, render: r => fmt(r.inter) }]], tops)}</div>`;
+  later(() => {
+    const e = sorted("engagement_rate"), p = sorted("posts_30d");
+    bars($("#ch-c-eng"), e.map(label), e.map(b => b.engagement_rate), { horizontal: true, pct: true, color: e.map(color), label: "Engajamento" });
+    bars($("#ch-c-posts"), p.map(label), p.map(b => b.posts_30d), { horizontal: true, color: p.map(color), label: "Posts" });
+  });
+  return h;
+};
+R.precos = () => {
+  const P = D.prices;
+  let h = `<h2>Preços e promoções</h2>`;
+  if (!P) return h + emptyCard("Preços", ["precos"]);
+  const dt = d => d.split("-").reverse().join("/");
+  const name = b => b.own ? `${b.brand} (PFS)` : b.brand;
+  h += `<p class="lead">Coleta diária na Cobasi e na Petlove (${fmt(P.total)} itens, ${dt(P.day)}). Preço por kg compara só ração seca de 1 kg ou mais, pela mediana. Promoção = preço abaixo do preço de tabela, que só a Cobasi informa.</p>`;
+  if (P.errors?.Petz) h += `<div class="empty"><b>Petz: sem dados.</b> ${esc(P.errors.Petz)}.</div><br>`;
+  const own = P.own_items;
+  h += `<div class="grid">${kpi("Itens da PFS encontrados", fmt(own.length), `${new Set(own.map(i => i.brand)).size} marcas · Cobasi ${own.filter(i => i.retailer === "Cobasi").length} · Petlove ${own.filter(i => i.retailer === "Petlove").length}`)}
+    ${kpi("PFS sem estoque", fmt(own.filter(i => !i.available).length), `de ${own.length} itens (ruptura)`)}
+    ${kpi("PFS em promoção", fmt(own.filter(i => i.promo).length), "na Cobasi")}
+    ${kpi("Mudanças de preço", P.previous_day ? fmt(P.changes.length) : "—", P.previous_day ? `desde ${dt(P.previous_day)}` : "aparece a partir da 2ª coleta")}</div>`;
+  const withKg = P.brands.filter(b => b.dry_price_kg != null).sort((a, b) => b.dry_price_kg - a.dry_price_kg);
+  h += `<div class="grid"><div class="card c6"><h3>Ração seca: preço mediano por kg</h3><div class="chart" id="ch-pr-kg" style="height:${Math.max(180, withKg.length * 30 + 40)}px"></div></div>
+    <div class="card c6"><h3>Por marca</h3>${sortableTable("t-pr-brands", [
+      ["Marca", "brand", { render: r => esc(name(r)) }], ["Itens", "products", { num: 1, render: r => fmt(r.products) }],
+      ["R$/kg", "dry_price_kg", { num: 1, render: r => brl(r.dry_price_kg) }],
+      ["Cobasi", "c", { num: 1, render: r => brl(r.dry_price_kg_by_store?.Cobasi) }], ["Petlove", "p", { num: 1, render: r => brl(r.dry_price_kg_by_store?.Petlove) }],
+      ["Promo", "promo_share", { num: 1, render: r => pct(r.promo_share, 0) }], ["Sem estoque", "unavailable_share", { num: 1, render: r => pct(r.unavailable_share, 0) }]],
+      P.brands.filter(b => b.products))}<p class="missing">${P.brands.filter(b => !b.products).map(b => esc(name(b))).join(", ") || "Nenhuma marca"} não aparece${P.brands.filter(b => !b.products).length > 1 ? "m" : ""} na Cobasi nem na Petlove.</p></div></div>`;
+  h += `<div class="card" style="margin-bottom:12px"><h3>Produtos da PFS</h3><div class="toolbar"><select id="pr-store"><option value="">Todas as lojas</option><option>Cobasi</option><option>Petlove</option></select>
+    <select id="pr-stock"><option value="">Com e sem estoque</option><option value="0">Só sem estoque</option></select></div><div id="pr-own"></div></div>`;
+  h += `<div class="grid"><div class="card c6"><h3>Maiores promoções agora (${fmt(P.promo_total)} no total)</h3>${sortableTable("t-pr-promo", [
+    ["Produto", "name", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a><br><span class="missing">${esc(r.brand)}${r.own ? " (PFS)" : ""} · ${esc(r.retailer)}</span>` }],
+    ["De", "list_price", { num: 1, render: r => brl(r.list_price) }], ["Por", "price", { num: 1, render: r => brl(r.price) }], ["Desc.", "discount", { num: 1, render: r => pct(r.discount, 0) }]], P.promos)}</div>
+    <div class="card c6"><h3>Mudanças desde a coleta anterior</h3>${P.previous_day ? (P.changes.length ? sortableTable("t-pr-chg", [
+      ["Produto", "name", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a><br><span class="missing">${esc(r.brand)}${r.own ? " (PFS)" : ""} · ${esc(r.retailer)}</span>` }],
+      ["Antes", "old_price", { num: 1, render: r => brl(r.old_price) }], ["Agora", "price", { num: 1, render: r => brl(r.price) + (r.available ? "" : '<br><span class="missing">sem estoque</span>') }],
+      ["Var.", "change", { num: 1, render: r => r.change ? (r.change > 0 ? "+" : "") + pct(r.change, 1) : "estoque" }]], P.changes)
+      : '<p class="missing">Nenhuma mudança de preço ou estoque.</p>') : `<p class="missing">A comparação começa na próxima coleta (amanhã às 6h).</p>`}</div></div>`;
+  later(() => {
+    bars($("#ch-pr-kg"), withKg.map(name), withKg.map(b => b.dry_price_kg), { horizontal: true, color: withKg.map(b => b.own ? css("--s1") : css("--muted")), label: "R$/kg" });
+    const draw = () => {
+      const st = $("#pr-store").value, nostock = $("#pr-stock").value === "0";
+      const rows = own.filter(i => (!st || i.retailer === st) && (!nostock || !i.available));
+      $("#pr-own").innerHTML = sortableTable("t-pr-own", [
+        ["Produto", "name", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>` }], ["Marca", "brand"], ["Loja", "retailer"],
+        ["Preço", "price", { num: 1, render: r => brl(r.price) + (r.promo ? `<br><span class="missing">de ${brl(r.list_price)}</span>` : "") }],
+        ["R$/kg", "price_kg", { num: 1, render: r => brl(r.price_kg) }],
+        ["Estoque", "available", { render: r => r.available ? "sim" : '<span class="pill pausado">sem estoque</span>' }]],
+        [...rows].sort((a, b) => a.available - b.available || a.name.localeCompare(b.name)));
+    };
+    $("#pr-store").onchange = $("#pr-stock").onchange = draw; draw();
+  });
+  return h;
+};
+R.conteudo = () => {
+  const C = D.content;
+  let h = `<h2>Conteúdo, SEO e GEO</h2><p class="lead">Saúde técnica do site para o Google e pauta a partir do que as pessoas realmente perguntam no Google (autocompletar). O volume de buscas e as posições entram quando o Search Console for liberado.</p>`;
+  if (!C) return h + emptyCard("SEO", ["seo_site", "buscas_google"]);
+  const A = C.audit;
+  if (A) {
+    const pages = A.pages.filter(p => !p.redirect);
+    const broken = pages.filter(p => p.status === 404);
+    const ok = pages.filter(p => p.status === 200);
+    const count = f => ok.filter(f).length;
+    h += `<div class="grid">${kpi("Páginas verificadas", fmt(pages.length), `versão em português (/br/) · ${fmt(A.sitemap_pages)} no sitemap`)}
+      ${kpi("Links quebrados", fmt(broken.length), "páginas que respondem 404")}
+      ${kpi("Sem H1 ou com mais de um", fmt(count(p => p.h1 !== 1)), `de ${ok.length} páginas`)}
+      ${kpi("Imagens sem texto alternativo", fmt(sum(ok, p => p.images_no_alt)), `de ${fmt(sum(ok, p => p.images))}, somando todas as páginas (o mesmo logo conta em cada uma)`)}</div>`;
+    const top = [...A.site_issues, ...A.pages.filter(p => p.redirect).flatMap(p => p.issues)];
+    h += `<div class="card" style="margin-bottom:12px"><h3>Problemas do site inteiro</h3><ul>${top.map(t => `<li>${esc(t)}</li>`).join("")}
+      <li>${fmt(count(p => !p.description || p.description.length < 70 || p.description.length > 160))} de ${ok.length} páginas com meta descrição ausente ou fora do tamanho ideal</li>
+      <li>${fmt(count(p => p.title && p.title.length > 65))} páginas com título longo demais (o Google corta)</li></ul></div>`;
+    h += `<div class="card" style="margin-bottom:12px"><h3>Página a página</h3>${sortableTable("t-seo", [
+      ["Página", "url", { render: r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.url.replace(/^https?:\/\/[^/]+/, "") || "/")}</a><br><span class="missing">${esc(r.title || "")}</span>` }],
+      ["Status", "status", { num: 1 }], ["Palavras", "words", { num: 1, render: r => fmt(r.words) }],
+      ["Problemas", "issues", { render: r => r.issues.length ? r.issues.map(esc).join("<br>") : '<span class="missing">nenhum</span>' }]],
+      [...A.pages].sort((a, b) => (b.status === 404) - (a.status === 404) || b.issues.length - a.issues.length))}</div>`;
+  }
+  const G = C.agenda || [];
+  h += `<div class="card" style="margin-bottom:12px"><h3>Pauta: perguntas que as pessoas fazem no Google (${G.length})</h3><p class="missing">Do autocompletar do Google para os temas ${esc([...new Set(G.map(g => g.seed))].join(", "))}. "Já no site" compara com os títulos das páginas. Temas com termo de saúde podem virar conteúdo, mas sem prometer que a ração trata, cura ou previne doença (regra do MAPA para alimento animal): revisar o texto antes de publicar.</p>${sortableTable("t-agenda", [
+    ["Pergunta", "query"], ["Tema", "seed"],
+    ["Já no site", "covered_by", { render: r => r.covered_by ? esc(r.covered_by) : '<span class="missing">não</span>' }],
+    ["MAPA", "mapa", { render: r => r.mapa ? `<span class="pill">⚠ saúde: ${esc(r.mapa)}</span>` : "" }]], G)}</div>`;
+  const Q = C.geo;
+  if (!Q) h += emptyCard("GEO: marcas citadas pelo Gemini", ["geo_gemini"], "<p>ChatGPT e Perplexity ficaram de fora porque as APIs deles são pagas.</p>");
+  else {
+    const last = Q.runs.at(-1), n = Q.answers.length;
+    const withOwn = Q.answers.filter(a => a.brands.some(b => Q.own_brands.includes(b))).length;
+    const counts = Object.entries(last.counts).sort((a, b) => b[1] - a[1]);
+    h += `<h3>GEO: o que o Gemini responde sobre ração</h3><p class="lead">${n} perguntas genéricas da categoria, feitas toda semana ao ${esc(Q.model)} (cota gratuita), em ${Q.date.split("-").reverse().join("/")}. ChatGPT e Perplexity ficaram de fora porque as APIs são pagas.</p>`;
+    h += `<div class="grid">${kpi("Respostas que citam a PFS", `${withOwn} de ${n}`, "qualquer marca da PFS")}
+      ${kpi("Marca mais citada", counts[0] ? esc(counts[0][0]) : "—", counts[0] ? `${counts[0][1]} de ${n} respostas` : "")}</div>`;
+    h += `<div class="grid"><div class="card c6"><h3>Em quantas respostas cada marca aparece</h3><div class="chart" id="ch-geo" style="height:${Math.max(180, counts.length * 26 + 40)}px"></div></div>
+      <div class="card c6"><h3>Perguntas e respostas</h3>${Q.answers.map(a => `<details><summary>${esc(a.question)} <span class="missing">· ${a.brands.length ? esc(a.brands.join(", ")) : "nenhuma marca"}</span></summary><p class="missing" style="white-space:pre-wrap">${esc(a.answer)}</p></details>`).join("")}</div></div>`;
+    later(() => bars($("#ch-geo"), counts.map(c => c[0] + (Q.own_brands.includes(c[0]) ? " (PFS)" : "")), counts.map(c => c[1]),
+      { horizontal: true, color: counts.map(c => Q.own_brands.includes(c[0]) ? css("--s1") : css("--muted")), label: "Respostas" }));
+  }
+  return h;
+};
+
+// ---------- navegação ----------
+let current = (location.hash || "#geral").slice(1);
+function render() {
+  generation++;
+  charts.splice(0).forEach(c => c.destroy());
+  $("#tabs").innerHTML = TABS.map(([id, label, ph]) => `<button data-t="${id}" class="${id === current ? "on" : ""}">${label}${ph === 2 ? '<span class="ph">fase 2</span>' : ""}</button>`).join("");
+  $("#tabs").querySelectorAll("button").forEach(b => b.onclick = () => { current = b.dataset.t; location.hash = current; render(); });
+  $("#main").innerHTML = `<section class="tab on">${(R[current] || R.geral)()}</section>`;
+}
+function stamp() {
+  $("#updated").textContent = D.generated_at ? "Atualizado em " + new Date(D.generated_at).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "Sem dados: rode run_daily.py";
+}
+function init() {
+  stamp();
+  const profiles = Object.keys(D.instagram?.profiles || {});
+  $("#profile").innerHTML = `<option value="">Todos</option>` + profiles.map(p => `<option value="${esc(p)}">@${esc(p)}</option>`).join("");
+  try { const saved = JSON.parse(localStorage.getItem("pfs-filters") || "{}"); if (saved.period) $("#period").value = saved.period; } catch (e) {}
+  $("#period").onchange = $("#profile").onchange = () => { try { localStorage.setItem("pfs-filters", JSON.stringify({ period: $("#period").value })); } catch (e) {} render(); };
+  $("#theme").onclick = () => {
+    const root = document.documentElement;
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark"; render();
+  };
+  window.onhashchange = () => { current = (location.hash || "#geral").slice(1); render(); };
+  // A coleta roda de hora em hora; a página aberta se recarrega sozinha para pegar os dados novos.
+  // No link publicado quem busca os dados novos é a tela de senha, a cada 5 minutos.
+  if (!window.ESPERAR_DADOS) setTimeout(() => location.reload(), 15 * 60 * 1000);
+  render();
+}
+let started = false;
+window.atualizarPortal = dados => {
+  const changed = dados.generated_at !== D.generated_at;
+  D = dados;
+  if (!started) { started = true; init(); }
+  else if (changed) { stamp(); render(); }
+};
+if (!window.ESPERAR_DADOS) { started = true; init(); }
+</script>
+<!-- Tela de senha do link publicado (mesmo esquema da Central da Mundo Pura).
+     Os dados (dados.enc) vão criptografados: PBKDF2-SHA256 (150 mil iterações) + AES-256-CBC + HMAC-SHA256,
+     abertos só no navegador. Sem a senha ninguém lê os números, nem olhando o código da página. -->
+<div id="cadeado" style="position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:var(--page);color:var(--ink)">
+  <form id="cadForm" style="width:100%;max-width:380px;background:var(--surface);border:1px solid var(--ring);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.18)">
+    <div style="width:46px;height:46px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:750;margin-bottom:16px">PFS</div>
+    <h1 style="font-size:20px;margin:0 0 4px">Pet Food Solution · Marketing</h1>
+    <p style="color:var(--ink-2);margin:0 0 18px;font-size:14px">Acesso restrito · digite a senha</p>
+    <label for="cadSenha" style="display:block;font-size:12px;color:var(--ink-2);font-weight:600;margin-bottom:6px">Senha</label>
+    <input id="cadSenha" type="password" autocomplete="current-password" required style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--ring);background:var(--raised);color:var(--ink);font:inherit">
+    <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:13px;color:var(--ink-2)"><input id="cadLembrar" type="checkbox"> Lembrar neste aparelho</label>
+    <button id="cadBotao" type="submit" style="width:100%;margin-top:14px;padding:10px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-weight:650">Entrar</button>
+    <div id="cadErro" style="color:var(--critical);font-size:13px;margin-top:10px" hidden></div>
+  </form>
+</div>
+<script>
+(function () {
+  'use strict';
+  let senha = null;
+
+  async function baixar() {
+    const r = await fetch('dados.enc?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('Não consegui baixar os dados (' + r.status + ').');
+    return new Uint8Array(await r.arrayBuffer());
+  }
+
+  // formato: "PF1" + sal(16) + iv(16) + hmac(32) + cifra (gzip do JSON)
+  async function abrir(s, b) {
+    if (b[0] !== 0x50 || b[1] !== 0x46 || b[2] !== 0x31) throw new Error('Arquivo de dados inválido.');
+    const sal = b.slice(3, 19), iv = b.slice(19, 35), mac = b.slice(35, 67), cifra = b.slice(67);
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(s), 'PBKDF2', false, ['deriveBits']);
+    const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: sal, iterations: 150000, hash: 'SHA-256' }, base, 512));
+    const kAes = await crypto.subtle.importKey('raw', bits.slice(0, 32), 'AES-CBC', false, ['decrypt']);
+    const kMac = await crypto.subtle.importKey('raw', bits.slice(32), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
+    const assinado = new Uint8Array(sal.length + iv.length + cifra.length);
+    assinado.set(sal, 0); assinado.set(iv, sal.length); assinado.set(cifra, sal.length + iv.length);
+    if (!(await crypto.subtle.verify('HMAC', kMac, mac, assinado))) throw new Error('senha');
+    const plano = await crypto.subtle.decrypt({ name: 'AES-CBC', iv }, kAes, cifra);
+    const texto = await new Response(new Blob([plano]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+    return JSON.parse(texto);
+  }
+
+  function botaoSair() {
+    const sair = document.createElement('button');
+    sair.textContent = 'Sair';
+    sair.title = 'Sair e esquecer a senha neste aparelho';
+    sair.onclick = () => { try { localStorage.removeItem('pfs-link-senha'); } catch (e) {} location.reload(); };
+    document.querySelector('header .bar').appendChild(sair);
+  }
+
+  async function entrar(s, lembrar) {
+    const erro = document.getElementById('cadErro'), botao = document.getElementById('cadBotao');
+    erro.hidden = true; botao.disabled = true; botao.textContent = 'Abrindo…';
+    try {
+      const dados = await abrir(s, await baixar());
+      senha = s;
+      try { if (lembrar) localStorage.setItem('pfs-link-senha', s); } catch (e) {}
+      document.getElementById('cadeado').remove();
+      botaoSair();
+      window.atualizarPortal(dados);
+      setInterval(atualizar, 5 * 60000);
+    } catch (e) {
+      erro.textContent = e.message === 'senha' ? 'Senha incorreta.' : e.message;
+      erro.hidden = false;
+      try { localStorage.removeItem('pfs-link-senha'); } catch (x) {}
+    } finally {
+      botao.disabled = false; botao.textContent = 'Entrar';
+    }
+  }
+
+  async function atualizar() {
+    try { window.atualizarPortal(await abrir(senha, await baixar())); } catch (e) { /* tenta de novo no próximo ciclo */ }
+  }
+
+  document.getElementById('cadForm').addEventListener('submit', e => {
+    e.preventDefault();
+    entrar(document.getElementById('cadSenha').value, document.getElementById('cadLembrar').checked);
+  });
+  let guardada = null;
+  try { guardada = localStorage.getItem('pfs-link-senha'); } catch (e) {}
+  if (guardada) entrar(guardada, true); else document.getElementById('cadSenha').focus();
+})();
+</script>
+
+</body>
+</html>
