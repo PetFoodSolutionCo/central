@@ -5,7 +5,8 @@ name: Coleta do painel
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # minutos "quebrados": no :00/:15 o GitHub fica sobrecarregado e atrasa ou pula rodadas
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
     inputs:
       modo:
