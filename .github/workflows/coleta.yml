@@ -64,7 +64,8 @@ jobs:
           ATUALIZACAO_1: ${{ secrets.ATUALIZACAO_1 }}
           ATUALIZACAO_2: ${{ secrets.ATUALIZACAO_2 }}
           ATUALIZACAO_3: ${{ secrets.ATUALIZACAO_3 }}
-        run: python -c "import os,io,base64,tarfile; b=''.join(os.environ.get('ATUALIZACAO_%d' % i, '').strip() for i in (1, 2, 3)); t = tarfile.open(fileobj=io.BytesIO(base64.b64decode(b)), mode='r:xz') if b else None; t and t.extractall('.', filter='data'); print('Atualizacao aplicada: ' + ', '.join(t.getnames()) if t else 'Sem atualizacao')"
+        run: |
+          python -c "import os,io,base64,tarfile; b=''.join(os.environ.get('ATUALIZACAO_%d' % i, '').strip() for i in (1, 2, 3)); t = tarfile.open(fileobj=io.BytesIO(base64.b64decode(b)), mode='r:xz') if b else None; t and t.extractall('.', filter='data'); print('Atualizacao aplicada: ' + ', '.join(t.getnames()) if t else 'Sem atualizacao')"
 
       - name: Coletar
         shell: powershell
