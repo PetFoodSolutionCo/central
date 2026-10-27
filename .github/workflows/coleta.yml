@@ -55,17 +55,32 @@ jobs:
       - name: Instalar dependências
         run: python -m pip install --quiet -r app/requirements.txt
 
-      # Atualização do código feita pelo site do GitHub (sem o nuvem.ps1): os Secrets ATUALIZACAO_1..3
-      # guardam os arquivos novos (tar.xz em base64) e são aplicados por cima do código do codigo.enc.
+      # Atualização feita pelo site do GitHub (o nuvem.ps1 fica bloqueado pelo antivírus no PC):
+      # ATUALIZACAO_1..6 = arquivos de código novos (tar.xz em base64, gerados por atualizar-pela-web\gerar.py);
+      # PLANO_ALCANCE = o plano_alcance.txt inteiro (boletos aprovados, meta), trocado sozinho a cada mês.
       - name: Aplicar atualização do código
-        shell: powershell
+        shell: python
         working-directory: app
         env:
           ATUALIZACAO_1: ${{ secrets.ATUALIZACAO_1 }}
           ATUALIZACAO_2: ${{ secrets.ATUALIZACAO_2 }}
           ATUALIZACAO_3: ${{ secrets.ATUALIZACAO_3 }}
+          ATUALIZACAO_4: ${{ secrets.ATUALIZACAO_4 }}
+          ATUALIZACAO_5: ${{ secrets.ATUALIZACAO_5 }}
+          ATUALIZACAO_6: ${{ secrets.ATUALIZACAO_6 }}
+          PLANO_ALCANCE: ${{ secrets.PLANO_ALCANCE }}
         run: |
-          python -c "import os,io,base64,tarfile; b=''.join(os.environ.get('ATUALIZACAO_%d' % i, '').strip() for i in (1, 2, 3)); t = tarfile.open(fileobj=io.BytesIO(base64.b64decode(b)), mode='r:xz') if b else None; t and t.extractall('.', filter='data'); print('Atualizacao aplicada: ' + ', '.join(t.getnames()) if t else 'Sem atualizacao')"
+          import base64, io, os, tarfile
+          b = "".join(os.environ.get(f"ATUALIZACAO_{i}", "").strip() for i in range(1, 7))
+          if b:
+              with tarfile.open(fileobj=io.BytesIO(base64.b64decode(b)), mode="r:xz") as t:
+                  t.extractall(".", filter="data")
+                  print("Codigo atualizado:", ", ".join(t.getnames()))
+          plano = os.environ.get("PLANO_ALCANCE", "").strip()
+          if plano:
+              with open("plano_alcance.txt", "w", encoding="utf-8") as f:
+                  f.write(plano + "\n")
+              print("plano_alcance.txt atualizado")
 
       - name: Coletar
         shell: powershell
